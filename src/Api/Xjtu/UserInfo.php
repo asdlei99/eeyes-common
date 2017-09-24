@@ -8,7 +8,7 @@ class UserInfo extends Base
 {
     protected static function getBy($field, $value)
     {
-        if (in_array($field, ['net_id', 'stu_id', 'name', 'mobile'])) {
+        if (!in_array($field, ['net_id', 'stu_id', 'name', 'mobile'])) {
             throw new \Exception("Field {$field} not allow.");
         }
         $response = static::client()->request('GET', '/xjtu/user/info', [
@@ -20,10 +20,11 @@ class UserInfo extends Base
         if ($response->getStatusCode() !== 200) {
             return null;
         }
-        if ($response['code'] !== 200) {
+        $result = json_decode($response->getBody(), true);
+        if ($result['code'] !== 200) {
             return null;
         } else {
-            return $response['data'];
+            return $result['data'];
         }
     }
 
