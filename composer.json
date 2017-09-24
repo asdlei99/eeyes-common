@@ -1,0 +1,20 @@
+{
+    "name": "ganlvtech/eeyes-common",
+    "description": "Common library for eeyes.net.",
+    "type": "library",
+    "license": "MIT License",
+    "authors": [
+        {
+            "name": "Ganlv",
+            "email": "ganlvtech@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Eeyes\\Common\\": "src/"
+        }
+    },
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    }
+}
