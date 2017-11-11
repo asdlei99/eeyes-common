@@ -3,6 +3,7 @@
 namespace Eeyes\Common\Api\Eeyes;
 
 use Eeyes\Common\Api\Base;
+use GuzzleHttp\Exception\GuzzleException;
 
 class Permission extends Base
 {
@@ -17,12 +18,19 @@ class Permission extends Base
      */
     public static function username($username, $permission)
     {
-        $response = static::client()->request('GET', '/eeyes/permission/username', [
-            'query' => [
-                'username' => $username,
-                'permission' => $permission,
-            ],
-        ]);
+        try {
+            $response = static::client()->request('GET', '/eeyes/permission/username', [
+                'query' => [
+                    'username' => $username,
+                    'permission' => $permission,
+                ],
+            ]);
+        } catch (GuzzleException $e) {
+            return [
+                'can' => false,
+                'msg' => $e->getMessage(),
+            ];
+        }
         if ($response->getStatusCode() !== 200) {
             return [
                 'can' => false,

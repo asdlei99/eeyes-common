@@ -3,19 +3,24 @@
 namespace Eeyes\Common\Api\Eeyes;
 
 use Eeyes\Common\Api\Base;
+use GuzzleHttp\Exception\GuzzleException;
 
 class Notification extends Base
 {
     public static function dingTalk($content)
     {
-        $response = static::client()->request('POST', '/eeyes/notification/ding_talk', [
-            'query' => [
-                'token' => static::getApiToken(),
-            ],
-            'json' => [
-                'content' => $content,
-            ],
-        ]);
+        try {
+            $response = static::client()->request('POST', '/eeyes/notification/ding_talk', [
+                'query' => [
+                    'token' => static::getApiToken(),
+                ],
+                'json' => [
+                    'content' => $content,
+                ],
+            ]);
+        } catch (GuzzleException $e) {
+            return false;
+        }
         if ($response->getStatusCode() !== 200) {
             return false;
         }

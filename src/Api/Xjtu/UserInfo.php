@@ -3,6 +3,7 @@
 namespace Eeyes\Common\Api\Xjtu;
 
 use Eeyes\Common\Api\Base;
+use GuzzleHttp\Exception\GuzzleException;
 
 class UserInfo extends Base
 {
@@ -11,12 +12,16 @@ class UserInfo extends Base
         if (!in_array($field, ['net_id', 'stu_id', 'name', 'mobile'])) {
             throw new \Exception("Field {$field} not allow.");
         }
-        $response = static::client()->request('GET', '/xjtu/user/info', [
-            'query' => [
-                $field => $value,
-                'token' => static::getApiToken(),
-            ],
-        ]);
+        try {
+            $response = static::client()->request('GET', '/xjtu/user/info', [
+                'query' => [
+                    $field => $value,
+                    'token' => static::getApiToken(),
+                ],
+            ]);
+        } catch (GuzzleException $e) {
+            return null;
+        }
         if ($response->getStatusCode() !== 200) {
             return null;
         }
